@@ -27,6 +27,15 @@ def get_all_batches(path):
     parquet_file = pq.ParquetFile(path)
     return pd.concat([batch.to_pandas() for batch in parquet_file.iter_batches()])
 
+def get_unique_values_for_columns(path, col):
+    parquet_file = pq.ParquetFile(path)
+    arr = []
+    for batch in parquet_file.iter_batches():
+        df = batch.to_pandas()
+        arr = list(set(arr + list(df[col].unique())))
+    return arr
+
+
 def patch_article_full_text(df):
     df["ARI"] = df["article_full_text"].apply(lambda x: x.replace("\n", " ")).apply(lambda x:ARI(x))
     df = df.drop(columns=PLAIN_TEXT_COLUMNS)
@@ -46,7 +55,7 @@ def ARI(text):
 print("Loading article data")
 article_data = patch_article_full_text(pd.concat([get_all_batches(ARTICLE_DATA_PATH(i)) for i in range(1, 5)]))
 print("Loading pageview data")
-pageview_data = pd.concat([get_first_batch(f) for f in glob.glob("data/Drive Daten/students_pageviews*.gzip")][:1])
+pageview_data = pd.concat([get_first_batch(f) for f in glob.glob("data/Drive Daten/students_pageviews*.gzip")])
 # pageview_data = get_first_batch(PAGEVIEW_DATA_PATH)
 print("Grouping pageview data")
 pageview_data_grouped = pageview_data[["article_drive_id", "time_engaged_in_s"]].groupby(["article_drive_id"]).sum(["time_engaged_in_s"]).reset_index()

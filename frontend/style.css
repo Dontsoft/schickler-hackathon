@@ -1,0 +1,39 @@
+.container{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: safe center;
+}
+
+
+
+
+
+.boxmodel{
+	
+	display : inline-block;
+	padding: 5px 20px 5px 20px ;
+	margin: 0px 20px;
+}
+h1 {
+padding-top: 10px;
+	font-family: 'Poppins';
+font-style: normal;
+font-weight: 20;
+font-size: 24px;padding-bottom: 3px;
+border-bottom:5px solid darkred ;
+line-height: 14px;
+text-align: center;
+/* identical to box height, or 150% */
+
+color: #000000;
+}
+h2 {
+	font-family: 'Poppins';
+font-style: normal;
+font-weight: 30;
+font-size: 14px;
+line-height: 80px;
+/* identical to box height, or 143% */
+
+color: #000000;
+}
